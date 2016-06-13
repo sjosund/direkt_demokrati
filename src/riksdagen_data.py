@@ -16,13 +16,6 @@ def fetch_propositions(start, end):
     return documents
 
 
-def fetch_until_today(start):
-    return fetch_propositions(
-        start=start,
-        end=date.today()
-    )
-
-
 def main():
     print(fetch_propositions(
         start=date.today() - timedelta(days=10),
