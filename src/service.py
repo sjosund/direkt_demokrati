@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 import json
 
-from flask import Flask
+from flask import Flask, jsonify
 
 from riksdagen_data import fetch_propositions
 
@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/propositions', methods=['GET'])
 def propositions():
-    return json.dumps(fetch_propositions(
+    return jsonify(fetch_propositions(
         start=date.today() - timedelta(days=10),
         end=date.today()
     ))
