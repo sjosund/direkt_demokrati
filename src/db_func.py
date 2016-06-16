@@ -58,28 +58,28 @@ def add_proposition(prop_data):
     return False
 
 
-def get_proposition_all(limit=100, order_by='id'):
+def get_propositions(sql_stmt):
     """
-    Fetches propositions from the database.
-    :param limit: Maximum number of propositions to return.
-    :param order_by: Column to order results by. List if ordered by mySQL before LIMIT is used, so the order
-                     might affect the results returned.
-    :return: A dict of propositions in the following format:
-             propositions = {prop_id: Internal database row ID
-                             updated: Unix timestamp from last database update
-                             up_votes: Number of approving votes (YES Votes)
-                             down_votes: Number of disapproving votes (NO Votes)
-                             title: Proposition Title
-                             url: Proposition URL at riksdagen.se
-                             pub_date: Date of publication (at riksdagen.se)
-    """
+        Fetches propositions from the database according to parameters in sql_stmt
+        :param sql_stmt: Dict defining the query to run:
+                         {stmt: SQL STATEMENT
+                          params: tuple containing statement parameters
+
+        :return: A dict of propositions in the following format:
+                 propositions = {prop_id: Internal database row ID
+                                 updated: Unix timestamp from last database update
+                                 up_votes: Number of approving votes (YES Votes)
+                                 down_votes: Number of disapproving votes (NO Votes)
+                                 title: Proposition Title
+                                 url: Proposition URL at riksdagen.se
+                                 pub_date: Date of publication (at riksdagen.se)
+        """
     con = connect_to_db()
     if con:
         with con:
             cursor = con.cursor()
-            stmt = "SELECT * FROM propositions ORDER BY %s LIMIT %s"
             try:
-                cursor.execute(stmt, (order_by, limit))
+                cursor.execute(sql_stmt['stmt'], sql_stmt['params'])
             except:
                 return False
             else:
@@ -97,7 +97,46 @@ def get_proposition_all(limit=100, order_by='id'):
     return False
 
 
+def get_proposition_all(limit=100, order_by='id'):
+    """
+    Fetches propositions from the database.
+    :param limit: Maximum number of propositions to return.
+    :param order_by: Column to order results by. List if ordered by mySQL before LIMIT is used, so the order
+                     might affect the results returned.
+    :return: A dict of propositions in the following format:
+             propositions = {prop_id: Internal database row ID
+                             updated: Unix timestamp from last database update
+                             up_votes: Number of approving votes (YES Votes)
+                             down_votes: Number of disapproving votes (NO Votes)
+                             title: Proposition Title
+                             url: Proposition URL at riksdagen.se
+                             pub_date: Date of publication (at riksdagen.se)
+    """
+
+    stmt = "SELECT * FROM propositions ORDER BY %s LIMIT %s"
+    params = (order_by, limit)
+
+    ret_data = get_propositions({'stmt': stmt, 'params': params})
+    print(ret_data)
+    if not ret_data:
+        return False
+    else:
+        return ret_data
+
+
+def get_proposition_by_criteria(criteria):
+
+    return False
+
+
+def get_proposition_by_date(start,stop):
+    return False
+
+
 def vote_for_prop():
+    #Register vote in vote table.
+
+    #Increment vote in proposition
     return False
 
 
