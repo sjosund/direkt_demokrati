@@ -1,11 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 4.0.10deb1
--- http://www.phpmyadmin.net
---
--- Värd: localhost
--- Skapad: 13 jun 2016 kl 11:22
--- Serverversion: 5.5.49-0ubuntu0.14.04.1
--- PHP-version: 5.5.9-1ubuntu4.17
+
+CREATE DATABASE `direct_democracy`;
+USE `direct_democracy`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -15,16 +10,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-
---
--- Databas: `direct_democracy`
---
-
--- --------------------------------------------------------
-
---
--- Tabellstruktur `propositions`
---
 
 CREATE TABLE IF NOT EXISTS `propositions` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -36,12 +21,6 @@ CREATE TABLE IF NOT EXISTS `propositions` (
   `pub_date` int(12) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Tabellstruktur `users`
---
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(9) NOT NULL AUTO_INCREMENT,
@@ -55,12 +34,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `regdate` int(15) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Tabellstruktur `votes`
---
 
 CREATE TABLE IF NOT EXISTS `votes` (
   `id` int(12) NOT NULL AUTO_INCREMENT,

@@ -5,6 +5,7 @@ import os
 from flask import Flask, Response, make_response, jsonify, request, send_from_directory
 
 from riksdagen_data import fetch_propositions
+from db_func import get_proposition_all
 
 
 app = Flask(__name__)
@@ -24,10 +25,11 @@ def send_js(path):
 @app.route('/propositions', methods=['GET'])
 def propositions():
     response = set_headers(Response(
-        response=json.dumps(fetch_propositions(
-            start=date.today() - timedelta(days=10),
-            end=date.today()
-        )),
+        response=json.dumps(get_proposition_all()),
+            # fetch_propositions(
+            # start=date.today() - timedelta(days=10),
+            # end=date.today()
+        # )),
         mimetype='application/json',
     ))
 

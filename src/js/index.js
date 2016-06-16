@@ -43,10 +43,10 @@ class Propositions extends Component {
 
         const propositionRows = propositions.reduce((mem, proposition) => {
             const propositionRow = h('tr', {class: 'proposition_row'}, [
-                h('td', {colspan: '5'}, h('a', {'href': 'http:' + proposition.dokument_url_html}, `${proposition.titel}`)),
-                h('td', null, `${proposition.datum}`),
-                h('td', {onClick: () => vote(proposition.dok_id, 1), class: 'upvote'}, 'Upvote'),
-                h('td', {onClick: () => vote(proposition.dok_id, -1), class: 'downvote'}, 'Downvote'),
+                h('td', {colspan: '5'}, h('a', {'href': 'http:' + proposition.url}, `${proposition.title}`)),
+                h('td', null, `${proposition.pub_date}`),
+                h('td', {onClick: () => vote(proposition.id, 1), class: 'upvote'}, 'Upvote'),
+                h('td', {onClick: () => vote(proposition.id, -1), class: 'downvote'}, 'Downvote'),
                 h('td', null, 'Score')
             ])
             return [...mem, propositionRow]
