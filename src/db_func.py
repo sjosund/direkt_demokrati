@@ -117,7 +117,6 @@ def get_proposition_all(limit=100, order_by='id'):
     params = (order_by, limit)
 
     ret_data = get_propositions({'stmt': stmt, 'params': params})
-    print(ret_data)
     if not ret_data:
         return False
     else:
