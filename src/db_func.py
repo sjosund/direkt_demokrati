@@ -123,9 +123,67 @@ def get_proposition_all(limit=100, order_by='id'):
         return ret_data
 
 
-def get_proposition_by_criteria(criteria):
+def get_proposition_by_criteria(criteria={}):
+    """
+    Fetches propositions from the database according to set criteria. Criteria can be set in almost any way but
+    with one limitation: all columns in the propositions table has to be returned (this is to keep dependent code
+    as simple as possible). The criteria are set using a dict where one specifies how to filter. There is no need
+    to set any criteria. If none are set, all propositions will be returned.
+    :param criteria: a dict that contains the criteria to format on. There is no need to specify all of the columns.
+                     Format:
+                     criteria = {where_col: column specified for a WHERE clause,
+                                 where_clause: <, >, >=, <=, =, <> [NOTE: IN and LIKE are NOT supported]
+                                 where_val: Value to filter column on, if keyword BETWEEN was used in where clause
+                                            then where val should be a list with two values
+                                 order_by: Column to order by,
+                                 order_dir: ASC or DESC (ascending or descending)
+                                 limit: Number of results to return
 
-    return False
+    :return: A dict of propositions in the following format:
+             propositions = {prop_id: Internal database row ID
+                             updated: Unix timestamp from last database update
+                             up_votes: Number of approving votes (YES Votes)
+                             down_votes: Number of disapproving votes (NO Votes)
+                             title: Proposition Title
+                             url: Proposition URL at riksdagen.se
+                             pub_date: Date of publication (at riksdagen.se)
+    """
+
+    params = []
+
+    if 'where_col' and 'where_clause' and 'where_val' in criteria:
+        where_str = 'WHERE ' + criteria['where_col'] + ' ' + criteria['where_clause']
+
+        if criteria['where_clause'] == 'BETWEEN':
+            where_str += ' %s AND %s'
+            params.append(criteria['where_val'][0])
+            params.append(criteria['where_val'][1])
+        else:
+            where_str += ' %s'
+            params.append(criteria['where_val'])
+    else:
+        where_str = ''
+
+    if 'order_by' and 'order_dir' in criteria:
+        order_str = 'ORDER BY %s ' + criteria['order_dir']
+        params.append(criteria['order_by'])
+    else:
+        order_str = ''
+
+    if 'limit' in criteria:
+        limit_str = 'LIMIT %s'
+        params.append(criteria['limit'])
+    else:
+        limit_str = ''
+
+    stmt = 'SELECT * FROM propositions ' + where_str + ' ' + order_str + ' ' + limit_str
+
+    ret_data = get_propositions({'stmt': stmt, 'params': tuple(params)})
+
+    if not ret_data:
+        return False
+    else:
+        return ret_data
 
 
 def get_proposition_by_date(start,stop):
