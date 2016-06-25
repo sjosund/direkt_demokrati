@@ -190,12 +190,37 @@ def get_proposition_by_date(start,stop):
     return False
 
 
-def vote_for_prop():
-    #Register vote in vote table.
+def vote_for_prop(user_id, prop_id, vote):
 
-    #Increment vote in proposition
-    return False
+    con = connect_to_db()
+
+    if con:
+        with con:
+            cursor = con.cursor()
+            curr_time = int(time.time())
+
+            #Register vote in vote table.
+            vote_stmt = "INSERT INTO votes (proposition_id, user_id, vote, timestamp) VALUES (%s, %s, %s, %s)"
+
+            if vote == 1:
+                inc_stmt = "UPDATE propositions SET upvotes = upvotes + 1 WHERE id = %s"
+            elif vote == -1:
+                inc_stmt = "UPDATE propositions SET downvotes = downvotes + 1 WHERE id = %s"
+
+            try:
+                cursor.execute(vote_stmt, (prop_id, user_id, vote, curr_time))
+                cursor.execute(inc_stmt,(prop_id))
+                con.commit()
+            except:
+                con.rollback()
+                return False
+            else:
+                return True
 
 
-def has_voted(user_id, propostion_id):
+
+
+
+
+def has_voted():
     return False
