@@ -24,8 +24,11 @@ def send_js(path):
 
 @app.route('/propositions', methods=['GET'])
 def propositions():
+    propositions = get_proposition_all()
+    for proposition in propositions:
+        proposition['pub_date'] = proposition['pub_date'].isoformat()
     response = set_headers(Response(
-        response=json.dumps(get_proposition_all()),
+        response=json.dumps(propositions),
             # fetch_propositions(
             # start=date.today() - timedelta(days=10),
             # end=date.today()
