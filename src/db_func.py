@@ -2,8 +2,10 @@
 Set of functions to read and write data to DD Database
 """
 
-import pymysql as sql
+from datetime import datetime
 import time
+
+import pymysql as sql
 
 
 def connect_to_db(host='localhost', user='root', password='', database='direct_democracy'):
@@ -92,7 +94,7 @@ def get_propositions(sql_stmt):
                                          'down_votes': row[3],
                                          'title': row[4],
                                          'url': row[5],
-                                         'pub_date': row[6]})
+                                         'pub_date': datetime.utcfromtimestamp(int(row[6])).date()})
                 return propositions
     return False
 
