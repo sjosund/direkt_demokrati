@@ -193,6 +193,17 @@ def get_proposition_by_date(start,stop):
 
 
 def vote_for_prop(user_id, prop_id, vote):
+    """
+    Used when a user votes for a proposition. Updates two tables: Adds or modifies a row in table ´votes´ (registers
+    a vote) and adds
+
+    :param user_id:
+    :param prop_id:
+    :param vote:
+    :return:
+    """
+
+    # TODO: Handle cases for when user has voted. Now it will only return false.
 
     con = connect_to_db()
 
@@ -201,7 +212,6 @@ def vote_for_prop(user_id, prop_id, vote):
             cursor = con.cursor()
             curr_time = int(time.time())
 
-            #Register vote in vote table.
             vote_stmt = "INSERT INTO votes (proposition_id, user_id, vote, timestamp) VALUES (%s, %s, %s, %s)"
 
             if vote == 1:
@@ -212,11 +222,11 @@ def vote_for_prop(user_id, prop_id, vote):
             try:
                 cursor.execute(vote_stmt, (prop_id, user_id, vote, curr_time))
                 cursor.execute(inc_stmt,(prop_id))
-                con.commit()
             except:
                 con.rollback()
                 return False
             else:
+                con.commit()
                 return True
 
 
