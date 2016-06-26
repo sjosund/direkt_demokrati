@@ -35,26 +35,22 @@ class Propositions extends Component {
             return h('div', null, 'Loading...')
         }
 
-        const tableHeaders = h('tr', null, [
-            h('td', null, 'Titel'),
-            h('td', null, 'Datum')
-        ])
         console.log(propositions[0])
 
         const propositionRows = propositions.reduce((mem, proposition) => {
             const propositionRow = h('tr', {class: 'proposition_row'}, [
                 h('td', {colspan: '5'}, h('a', {'href': 'http:' + proposition.url}, `${proposition.title}`)),
                 h('td', null, `${proposition.pub_date}`),
-                h('td', {onClick: () => vote(proposition.id, 1), class: 'upvote'}, 'Upvote'),
-                h('td', {onClick: () => vote(proposition.id, -1), class: 'downvote'}, 'Downvote'),
-                h('td', null, 'Score')
+                h('td', {onClick: () => vote(proposition.prop_id, 1), class: 'upvote'}, 'Upvote'),
+                h('td', {onClick: () => vote(proposition.prop_id, -1), class: 'downvote'}, 'Downvote'),
+                h('td', null, proposition.up_votes - proposition.down_votes)
             ])
             return [...mem, propositionRow]
         }, [])
 
         return h('div', null,
             h('table', null, [
-                tableHeaders, ...propositionRows
+                ...propositionRows
             ])
         )
     }

@@ -196,6 +196,9 @@ def vote_for_prop(user_id, prop_id, vote):
 
     con = connect_to_db()
 
+    if vote not in {1, -1}:
+        raise IncorrectVoteException('Incorrect vote value')
+
     if con:
         with con:
             cursor = con.cursor()
@@ -220,8 +223,9 @@ def vote_for_prop(user_id, prop_id, vote):
                 return True
 
 
-
-
+class IncorrectVoteException(Exception):
+    def __init__(self, message):
+        super(IncorrectVoteException, self).__init__(message)
 
 
 def has_voted():
