@@ -5,7 +5,7 @@ import os
 from flask import Flask, Response, make_response, jsonify, request, send_from_directory
 
 from riksdagen_data import fetch_propositions
-from db_func import get_proposition_all
+from db_func import get_proposition_all, vote_for_prop
 
 
 app = Flask(__name__)
@@ -42,6 +42,11 @@ def propositions():
 @app.route('/vote', methods=['POST'])
 def vote():
     data = request.json
+    vote_for_prop(
+        user_id=123,
+        prop_id=int(data['document_id']),
+        vote=int(data['vote'])
+    )
     # write_vote(
     #     document_id=data.documnet_id,
     #     vote=data.vote
