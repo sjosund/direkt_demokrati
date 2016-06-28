@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS `votes` (
   `vote` int(1) NOT NULL,
   `timestamp` int(12) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `proposition_id` (`proposition_id`,`user_id`)
+  UNIQUE KEY `unique_index`(`user_id`, `proposition_id`)
+  -- OLD, WRONG: UNIQUE KEY `proposition_id` (`proposition_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='VOTE: 0 for no, 1 for yes' AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
